@@ -5,6 +5,8 @@ Sales dataset. The platform combines demand forecasting, descriptive price
 elasticity, promotion-effect analysis, constrained pricing simulation, and
 Power BI-ready reporting.
 
+[![Deploy to Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io/deploy?repository=Aakanshak/Project_03_DA&branch=main&mainModule=src/app.py)
+
 ## Business problem
 
 Retail teams need to balance several competing objectives:
@@ -236,6 +238,10 @@ For Streamlit Community Cloud, connect the GitHub repository, set
 dashboard exports if the deployed app should display results without running
 the pipeline in the cloud.
 
+The app has a minimal dependency file at `src/requirements.txt`, so Community
+Cloud does not need to install the full modeling environment to serve the
+dashboard.
+
 ## Results
 
 No model-result artifacts are currently present in this repository, so there
@@ -280,4 +286,3 @@ Detailed field mappings and DAX measures are documented in
 ## License
 
 This project is licensed under the MIT License.
-
