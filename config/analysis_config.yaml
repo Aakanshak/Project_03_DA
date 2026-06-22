@@ -1,0 +1,13 @@
+elasticity:
+  confidence_level: 0.95
+  minimum_observations_per_segment: 500
+
+promotion_matching:
+  # Exact matching controls. Each matched cell must contain both promo and
+  # non-promo observations.
+  controls:
+    - store_id
+    - day_of_week
+    - month
+    - year
+  minimum_matched_cells_per_segment: 10
