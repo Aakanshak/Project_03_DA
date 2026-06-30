@@ -1,12 +1,12 @@
 # Dynamic Pricing and Promotion Optimization Platform
 
-Live Demo: https://YOUR-STREAMLIT-APP-LINK.streamlit.app
+## Live Demo
 
-GitHub Repository: https://github.com/Aakanshak/YOUR-REPO-NAME
+[Deployed Link](https://dynamic-pricing-promotion-optimization.streamlit.app)
 
-Main file path: `src/app.py`
+## GitHub Repository
 
-An advanced retail analytics portfolio project built on the Rossmann Store Sales dataset. The platform combines demand forecasting, descriptive elasticity analysis, promotion impact measurement, constrained scenario simulation, and executive-ready dashboarding.
+[GitHub Repository](https://github.com/Aakanshak/Dynamic-Pricing-Promotion-Optimization-Platform)
 
 ## Business Problem
 
