@@ -3,6 +3,7 @@
 venv/
 env/
 __pycache__/
+*.pyc
 *.py[cod]
 .pytest_cache/
 .mypy_cache/
@@ -29,4 +30,3 @@ reports/predictions/
 # Operating system files
 .DS_Store
 Thumbs.db
-

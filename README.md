@@ -1,88 +1,64 @@
 # Dynamic Pricing and Promotion Optimization Platform
 
-An end-to-end retail analytics portfolio project built on the Rossmann Store
-Sales dataset. The platform combines demand forecasting, descriptive price
-elasticity, promotion-effect analysis, constrained pricing simulation, and
-Power BI-ready reporting.
+Live Demo: https://YOUR-STREAMLIT-APP-LINK.streamlit.app
 
-[![Deploy to Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io/deploy?repository=Aakanshak/Project_03_DA&branch=main&mainModule=src/app.py)
+GitHub Repository: https://github.com/Aakanshak/YOUR-REPO-NAME
 
-## Business problem
+Main file path: `src/app.py`
 
-Retail teams need to balance several competing objectives:
+An advanced retail analytics portfolio project built on the Rossmann Store Sales dataset. The platform combines demand forecasting, descriptive elasticity analysis, promotion impact measurement, constrained scenario simulation, and executive-ready dashboarding.
 
-- forecast store demand accurately enough to plan operations;
-- understand where promotions produce incremental sales;
-- identify segments that appear more or less price-sensitive;
-- improve gross margin without causing an unacceptable revenue decline; and
-- communicate recommendations through an accessible dashboard.
+## Business Problem
 
-This project implements that workflow at daily store level. It compares
-Prophet and XGBoost forecasts against a seasonal naive baseline, estimates
-StoreType-level elasticity and promotion lift, then searches price/promotion
-scenarios for the highest projected gross margin subject to a configurable
-revenue floor.
+Retail teams need to grow margin without damaging demand. This project answers four practical questions:
 
-## Tech stack
+- Which stores and segments are likely to overperform or underperform demand forecasts?
+- Which store types appear more sensitive to price-level changes?
+- Where do promotions create measurable lift?
+- Which pricing actions improve expected margin while respecting a revenue-risk floor?
 
-- Python 3.11
-- pandas, NumPy, statsmodels, scikit-learn
-- Prophet and XGBoost
-- PostgreSQL, SQLAlchemy, psycopg2
-- Jupyter, Matplotlib, Seaborn
-- Power BI-ready CSV/Parquet exports
-- Streamlit for the optional interactive demo
+The deployed Streamlit app is designed for recruiter review. It can run from committed dashboard exports when available, and it falls back to a small built-in demo dataset when raw Kaggle data, PostgreSQL, `.env`, models, or generated pipeline outputs are unavailable.
 
-## Architecture
+## Architecture And Pipeline
 
 ```mermaid
 flowchart LR
-    A[Rossmann train.csv and store.csv] --> B[Python cleaning]
-    B --> C[(PostgreSQL normalized schema)]
+    A[Rossmann train.csv and store.csv] --> B[Data cleaning]
+    B --> C[(PostgreSQL schema)]
     B --> D[Feature engineering]
     C --> D
     D --> E[data/processed/features.parquet]
-    E --> F[Prophet per sampled store]
-    E --> G[Global XGBoost forecast]
+    E --> F[Prophet forecasts]
+    E --> G[XGBoost forecasts]
     F --> H[Forecast evaluation]
     G --> H
-    E --> I[Elasticity OLS]
-    E --> J[Matched promotion analysis]
+    E --> I[Elasticity analysis]
+    E --> J[Promotion impact]
     I --> K[Scenario simulator]
     J --> K
-    K --> L[Revenue-constrained recommendations]
+    K --> L[Pricing recommendations]
     H --> M[Power BI exports]
-    I --> M
-    J --> M
     L --> M
-    M --> N[Power BI dashboard]
-    M --> O[Streamlit demo]
+    M --> N[Streamlit dashboard]
 ```
 
-## Data source
+The full analytics pipeline remains available for local execution. The Streamlit app does not require pipeline execution during startup.
 
-The project uses the
-[Rossmann Store Sales Kaggle competition](https://www.kaggle.com/c/rossmann-store-sales/data),
-which contains historical daily sales and store attributes for 1,115 stores.
-Download `train.csv` and `store.csv` from Kaggle and place them in
-`data/raw/`. Raw source files are intentionally excluded from Git.
+## Tech Stack
 
-### Price-proxy limitation
+- Python 3.11
+- Streamlit and pandas for the deployed dashboard
+- PostgreSQL, SQLAlchemy, and psycopg2 for local data loading
+- scikit-learn, Prophet, XGBoost, and statsmodels for modeling and analysis
+- Jupyter, Matplotlib, and Seaborn for EDA
+- Power BI-ready CSV exports for reporting
 
-Rossmann does not provide an observed product price or discount depth.
-`avg_transaction_value = sales / customers` is therefore used as a smoothed
-price-level proxy.
-
-This proxy contains the target variable, so the resulting elasticity
-coefficient is descriptive, not causal. It is useful for scenario exploration,
-but it does not establish how demand would respond to an actual posted-price
-experiment. Production decisions should be validated with randomized or
-quasi-experimental pricing tests.
-
-## Project structure
+## Repository Structure
 
 ```text
 .
+|-- .streamlit/
+|   `-- config.toml
 |-- config/
 |   `-- analysis_config.yaml
 |-- data/
@@ -92,196 +68,121 @@ quasi-experimental pricing tests.
 |-- notebooks/
 |   `-- 01_eda.ipynb
 |-- reports/
-|   |-- figures/
 |   |-- powerbi_dashboard_guide.md
 |   `-- pricing_recommendations.md
 |-- sql/
 |   `-- schema.sql
 |-- src/
 |   |-- app.py
-|   |-- config.py
-|   |-- elasticity.py
-|   |-- evaluate_forecasts.py
-|   |-- export_for_powerbi.py
+|   |-- load_data.py
 |   |-- features.py
+|   |-- evaluate_forecasts.py
 |   |-- forecast_prophet.py
 |   |-- forecast_xgboost.py
-|   |-- load_data.py
+|   |-- elasticity.py
 |   |-- promo_impact.py
+|   |-- scenario_simulator.py
 |   |-- recommend.py
-|   `-- scenario_simulator.py
-|-- .env.example
-|-- LICENSE
-`-- requirements.txt
+|   `-- export_for_powerbi.py
+|-- requirements.txt
+`-- requirements-dev.txt
 ```
 
-## Setup
+## Local Setup
 
-The pinned dependencies target Python 3.11.
+Use the lightweight app environment when you only want to run the dashboard:
 
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install --upgrade pip
 pip install -r requirements.txt
+streamlit run src/app.py
 ```
 
-Copy `.env.example` to `.env` and enter PostgreSQL credentials:
+Use the full development environment when running the analytics pipeline:
 
 ```powershell
-Copy-Item .env.example .env
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+pip install -r requirements-dev.txt
 ```
 
-Create the configured PostgreSQL database, then place:
+Copy `.env.example` to `.env`, add PostgreSQL credentials, then download the Kaggle Rossmann files and place them here:
 
 ```text
 data/raw/train.csv
 data/raw/store.csv
 ```
 
-## Run the pipeline
+Raw Kaggle CSVs are intentionally ignored and should not be committed.
+
+## Pipeline Commands
 
 Run commands from the repository root.
 
-### 1. Create the schema and load source data
-
-`load_data.py` executes `sql/schema.sql`, cleans the source files, removes
-explicitly closed zero-sales rows, and loads the normalized tables.
-
 ```powershell
 python src/load_data.py
-```
-
-### 2. Run EDA and create features
-
-```powershell
 jupyter nbconvert --to notebook --execute --inplace notebooks/01_eda.ipynb
-```
-
-Output:
-
-- `data/processed/features.parquet`
-- five EDA charts in `reports/figures/`
-
-### 3. Train and evaluate demand forecasts
-
-```powershell
 python src/evaluate_forecasts.py
-```
-
-This uses the final 42 days as a time-based holdout and compares:
-
-- seasonal naive lag-7;
-- Prophet for a StoreType-stratified sample of stores; and
-- a global XGBoost model using recursive holdout predictions to prevent future
-  target leakage.
-
-Outputs:
-
-- `reports/forecast_comparison.csv`
-- `reports/predictions/prophet_predictions.csv`
-- `reports/predictions/xgboost_predictions.csv`
-- actual-versus-predicted charts in `reports/figures/`
-
-### 4. Estimate elasticity and promotion impact
-
-```powershell
 python src/elasticity.py
 python src/promo_impact.py
-```
-
-Outputs:
-
-- `reports/elasticity_by_segment.csv`
-- `reports/promo_impact_by_segment.csv`
-- `reports/elasticity_and_promo_findings.md`
-
-### 5. Simulate scenarios and generate recommendations
-
-Commercial assumptions are centralized in `src/config.py`, including gross
-margin, current promotion depth, scenario ranges, and maximum allowed revenue
-decline.
-
-```powershell
 python src/scenario_simulator.py
 python src/recommend.py
-```
-
-Outputs:
-
-- `data/processed/scenario_results.csv`
-- `data/processed/recommendations.csv`
-- `reports/pricing_recommendations.md`
-
-### 6. Create Power BI exports
-
-```powershell
 python src/export_for_powerbi.py
 ```
 
-Outputs are written to `data/processed/powerbi_exports/` in both CSV and
-Parquet formats. See `reports/powerbi_dashboard_guide.md` for the exact pages,
-measures, visuals, and filters.
+Important outputs:
 
-### 7. Launch the optional Streamlit demo
+- `data/processed/features.parquet`
+- `reports/forecast_comparison.csv`
+- `reports/predictions/`
+- `data/processed/recommendations.csv`
+- `data/processed/powerbi_exports/`
+- `reports/elasticity_and_promo_findings.md`
+- `reports/pricing_recommendations.md`
 
-```powershell
-streamlit run src/app.py
+## Streamlit Deployment
+
+Deploy on Streamlit Community Cloud with these settings:
+
+- Repository: `https://github.com/Aakanshak/YOUR-REPO-NAME`
+- Branch: `main`
+- Main file path: `src/app.py`
+
+The root `requirements.txt` is intentionally minimal for deployment:
+
+```text
+streamlit
+pandas
 ```
 
-The app reads the generated Power BI exports and lets users select a store,
-compare forecast lines, select a StoreType, and inspect its pricing
-recommendation.
+No Streamlit secrets are required for the demo dashboard. The app does not connect to PostgreSQL, read `.env`, or require `data/raw/train.csv` or `data/raw/store.csv` at startup.
 
-For Streamlit Community Cloud, connect the GitHub repository, set
-`src/app.py` as the entry point, and use Python 3.11. Commit the small generated
-dashboard exports if the deployed app should display results without running
-the pipeline in the cloud.
+If `data/processed/powerbi_exports/sales_actuals_vs_forecast.csv` and `data/processed/powerbi_exports/pricing_recommendations.csv` are present, the app uses them. If they are missing, the app automatically shows a built-in demo dashboard so the deployed page remains usable.
 
-The app has a minimal dependency file at `src/requirements.txt`, so Community
-Cloud does not need to install the full modeling environment to serve the
-dashboard.
+## Modeling Safeguards
 
-## Results
+- Forecasting uses a chronological holdout window.
+- XGBoost lag and rolling features are designed to avoid future target leakage.
+- Elasticity is descriptive because Rossmann does not include observed price or discount-depth fields.
+- Scenario recommendations are constrained by a configurable revenue floor.
+- Missing or economically invalid elasticity estimates are flagged for review rather than forced into a recommendation.
 
-No model-result artifacts are currently present in this repository, so there
-is no defensible MAPE-improvement or expected-margin-lift number to publish
-yet. Placeholder claims are intentionally omitted.
+## Version-Control Hygiene
 
-After the pipeline is executed:
+The repository is configured to ignore local secrets, virtual environments, Python caches, raw Kaggle files, model binaries, and large generated outputs. Do not commit:
 
-- the headline forecast improvement is the best non-naive value in
-  `reports/forecast_comparison.csv`,
-  column `mape_improvement_vs_naive_pct`;
-- the segment margin lifts are stored in
-  `data/processed/recommendations.csv`,
-  column `expected_margin_lift_pct`; and
-- the recommendation report reproduces those measured values in plain English.
-
-This Results section should be updated only from those generated artifacts.
-
-## Modeling safeguards
-
-- All forecasting uses a chronological final-six-week holdout.
-- XGBoost holdout lags and rolling statistics are updated recursively from
-  prior predictions, not future actual sales.
-- Current-day `customers` and transaction-value features are excluded from the
-  demand model because they expose or derive from the target.
-- Prophet and XGBoost are compared on common Store/date rows.
-- Scenario recommendations must satisfy the configured revenue floor.
-- Missing or nonnegative elasticity produces a review flag rather than an
-  economically unsupported recommendation.
-
-## Dashboard
-
-The Power BI design contains three pages:
-
-1. Demand Forecast
-2. Promotion and Elasticity
-3. Pricing Recommendations
-
-Detailed field mappings and DAX measures are documented in
-`reports/powerbi_dashboard_guide.md`.
+- `.env`
+- `.venv/` or `venv/`
+- `__pycache__/` or `*.pyc`
+- `data/raw/*.csv`
+- `models/`
+- `*.joblib` or `*.pkl`
+- `reports/predictions/`
+- `.ipynb_checkpoints/`
+- `.vscode/`
 
 ## License
 
