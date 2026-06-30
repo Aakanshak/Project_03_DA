@@ -1,0 +1,3 @@
+table,rows,csv_file
+sales_actuals_vs_forecast,120,sales_actuals_vs_forecast.csv
+pricing_recommendations,4,pricing_recommendations.csv

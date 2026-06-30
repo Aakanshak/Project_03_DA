@@ -1,0 +1,5 @@
+segment,current_state,recommended_action,expected_margin_lift_pct,revenue_change_pct,rationale
+a,High sales volume with moderate promotion dependency.,Increase price by 2% and reduce unnecessary promotion depth.,0.084,-0.012,Segment shows stable demand and can absorb a small price increase.
+b,Price-sensitive segment with strong promotion response.,Maintain current price and use targeted promotions.,0.052,0.018,"Promotions drive demand, so controlled discounting is better than price increase."
+c,Premium-performing stores with lower elasticity.,Increase price by 3% with limited promotional support.,0.113,-0.009,Lower elasticity suggests margin can improve without major revenue loss.
+d,Lower sales segment with higher demand volatility.,Keep price stable and test small basket-level promotions.,0.041,0.011,Stable pricing protects revenue while promotions support customer traffic.
