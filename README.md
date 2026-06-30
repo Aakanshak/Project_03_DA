@@ -2,11 +2,11 @@
 
 ## Live Demo
 
-[Deployed Link](https://dynamic-pricing-promotion-optimization.streamlit.app)
+(https://dynamic-pricing-promotion-optimization.streamlit.app)
 
 ## GitHub Repository
 
-[GitHub Repository](https://github.com/Aakanshak/Dynamic-Pricing-Promotion-Optimization-Platform)
+(https://github.com/Aakanshak/Dynamic-Pricing-Promotion-Optimization-Platform)
 
 ## Business Problem
 
